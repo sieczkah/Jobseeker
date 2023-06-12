@@ -9,5 +9,16 @@ from .models import JobApplication
 
 @login_required
 def index(request):
-    context = {}
+    applications = JobApplication.objects.filter(user=request.user)
+    context = {"applications": applications}
     return render(request, "base/index.html", context=context)
+
+
+@login_required
+def job_detail(request, id):
+    job_application = JobApplication.objects.get(id=id)
+    if job_application.user != request.user:
+        return HttpResponse("You are not allowed here")
+    else:
+        context = {"job_application": job_application}
+        return render(request, "base/components/job_details.html", context)
