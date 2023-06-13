@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h3>job form</h3>
+<form action="" method="POST">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input type="submit" value="submit" class="btn btn-success">
+</form>
+<a href="{% url 'home' %}" class="btn btn-danger">Return</a>
+{% endblock content %}

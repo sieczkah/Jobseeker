@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div id="htmx-job-detail">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row justify-content-between">
+      <h4>{{ job_offer.posistion }} - {{ job_offer.company }}</h4>
+    </div>
+    <div class="row">
+      <p class="mb-0 pb-0"><a href="{{ job_offer.link }}" target="_blank">Offer link</a> <span class="ms-3">Salary
+          range: {{ job_offer.salary }}</span></p>
+      <p class="small mt-0 pt-0 text-muted">Apply date: {{ job_offer.apply_date|date:"D d.m" }}, Last
+        update:
+        {{ job_offer.update_date|date:"D d.m" }}
+        <span class="badge text-bg-info fw-bold">{{ job_offer.get_status_display }}</span>
+      </p>
+    </div>
+  </div>
+  <p>{{ job_offer.description }}</p>
+  <a href="{% url 'joboffer-update' job_offer.id %}" class="btn btn-primary">Edit offer</a>
+</div>
+{% endblock content %}

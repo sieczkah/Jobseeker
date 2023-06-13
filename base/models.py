@@ -6,7 +6,7 @@ from django.db import models
 # Create your models here.
 
 
-class JobApplication(models.Model):
+class JobOffer(models.Model):
     APPLIED = "AP"
     CONTACTED = "CO"
     INTERVIEWED = "IV"
@@ -27,7 +27,6 @@ class JobApplication(models.Model):
         (REJECTED, "REJECTED"),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    id = models.UUIDField(default=uuid4, unique=True, primary_key=True, editable=False)
     posistion = models.CharField(max_length=250, null=True, blank=True)
     company = models.CharField(max_length=250, blank=False, null=False)
     description = models.TextField(null=True, blank=True)

@@ -35,7 +35,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("home")
+    return redirect("login")
 
 
 def register_view(request):

@@ -1,28 +1,55 @@
+from typing import Any, Dict
+
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
 
-from .models import JobApplication
-
-# Create your views here.
-
-
-@login_required
-def index(request):
-    applications = JobApplication.objects.filter(user=request.user)
-    context = {"applications": applications}
-    return render(request, "base/index.html", context=context)
+from .models import JobOffer
 
 
-@login_required
-def job_detail(request, id):
-    job_application = JobApplication.objects.get(id=id)
-    if job_application.user != request.user:
-        return HttpResponse("You are not allowed here")
-    else:
-        context = {"job_application": job_application}
-        return render(request, "base/htmx_components/job_details.html", context)
+class JobOfferList(LoginRequiredMixin, ListView):
+    model = JobOffer
+    context_object_name = "job_offers"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["job_offers"] = context["job_offers"].filter(user=self.request.user)
+
+        return context
 
 
-def get_details_homeview(request):
-    return render(request, "base/htmx_components/details_homeview.html")
+class HomeView(JobOfferList):
+    template_name = "base/index.html"
+
+
+class JobOfferDetail(LoginRequiredMixin, DetailView):
+    model = JobOffer
+    context_object_name = "job_offer"
+
+
+class JobOfferCreate(LoginRequiredMixin, CreateView):
+    model = JobOffer
+    fields = ["link", "posistion", "company", "description", "status", "salary"]
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super(JobOfferCreate, self).form_valid(form)
+
+
+class JobOfferUpdate(LoginRequiredMixin, UpdateView):
+    model = JobOffer
+    fields = ["link", "posistion", "company", "description", "status", "salary"]
+    success_url = reverse_lazy("home")
+
+
+class JobOfferDelete(LoginRequiredMixin, DeleteView):
+    model = JobOffer
+    context_object_name = "job_offer"
+    success_url = reverse_lazy("home")
