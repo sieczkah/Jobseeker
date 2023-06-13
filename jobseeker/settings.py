@@ -33,9 +33,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # CRISPY FORMS
+    # THIRD PARTY MODULES
     "crispy_forms",
     "crispy_bootstrap5",
+    "fontawesomefree",
     # MY APPS
     "base.apps.BaseConfig",
     "users.apps.UsersConfig",

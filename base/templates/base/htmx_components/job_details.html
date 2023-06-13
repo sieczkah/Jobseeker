@@ -1,0 +1,33 @@
+{% block component %}
+<div id="htmx-job-detail">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row justify-content-between">
+      <h4>{{ job_application.posistion }} - {{ job_application.company }}</h4>
+      <button type="button" class="btn btn-danger btn-sm" data-hx-get="{% url 'details-homeview' %}" hx-trigger="click"
+        hx-target="#htmx-job-detail" hx-swap="outerHTML">
+        <i class="fa-solid fa-rectangle-xmark"></i>
+      </button>
+    </div>
+    <div class="row">
+      <p class="mb-0 pb-0"><a href="{{ job_application.link }}" target="_blank">Offer link</a> <span class="ms-3">Salary
+          range: {{ job_application.salary }}</span></p>
+      <p class="small mt-0 pt-0 text-muted">Apply date: {{ job_application.apply_date|date:"D d.m" }}, Last
+        update:
+        {{ job_application.update_date|date:"D d.m" }}
+        <span class="badge text-bg-info fw-bold">{{ job_application.get_status_display }}</span>
+      </p>
+    </div>
+  </div>
+  <p>{{ job_application.description }}</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock component %}

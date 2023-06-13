@@ -21,4 +21,8 @@ def job_detail(request, id):
         return HttpResponse("You are not allowed here")
     else:
         context = {"job_application": job_application}
-        return render(request, "base/components/job_details.html", context)
+        return render(request, "base/htmx_components/job_details.html", context)
+
+
+def get_details_homeview(request):
+    return render(request, "base/htmx_components/details_homeview.html")
