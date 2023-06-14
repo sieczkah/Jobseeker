@@ -44,8 +44,7 @@ class JobAssistant:
             Exception: If an unexpected error occurs.
 
         Returns:
-            str: An error message in case an exception is raised. If no exception is raised, the function doesn't return
-                anything but assigns the response from the OpenAI API to self.gpt_response.
+            str: An error message in case an exception is raised. If no exception is raised, returns '200'.
         """
         try:
             request_context = f"Consider the following job offer for {self.job_posistion}:\n{self.job_offer}"
@@ -58,6 +57,7 @@ class JobAssistant:
                     }
                 ],
             )
+            return "200"
         except openai.error.APIError as e:
             # Handle API error here, e.g. retry or log
             return f"OpenAI API returned an API Error: {e}"

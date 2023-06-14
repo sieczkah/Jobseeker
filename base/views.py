@@ -4,14 +4,38 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms.models import BaseModelForm
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from utils import openai_jobassistant
+
 from .models import JobOffer
+
+
+@login_required
+def ai_jobassistant_view(request, pk):
+    offer = JobOffer.objects.get(id=pk)
+
+    if request.user == offer.user:
+        posistion = offer.posistion
+        description = offer.description
+        assistant = openai_jobassistant.JobAssistant(posistion, description)
+        request_status = assistant.send_request()
+
+        if request_status == "200":
+            ai_response = assistant.get_styled_answer()
+            offer.ai_generated_data = ai_response
+            offer.save()
+            return redirect(reverse_lazy("joboffer-detail", args=[offer.id]))
+        else:
+            return HttpResponse(request_status)
+
+    else:
+        return Http404
 
 
 class JobOfferList(LoginRequiredMixin, ListView):
