@@ -8,7 +8,7 @@ env = environ.Env(DEBUG=(bool, False))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DJANGO_ENV = "dev"
+DJANGO_DEV = "main"
 # Read environment variables from .env file
 env.read_env(Path.joinpath(BASE_DIR, ".env"))
 
@@ -76,9 +76,10 @@ WSGI_APPLICATION = "jobseeker.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {"default": env.dict("DB_INFO")}
-
+if DJANGO_DEV == "main":
+    DATABASES = {"default": env.dict("DB_INFO")}
+else:
+    DATABASES = {"default": env.dict("DB_INFO_DEV")}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
