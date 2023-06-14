@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,7 +28,7 @@ class JobOfferList(LoginRequiredMixin, ListView):
                 Q(company__icontains=search_input)
                 | Q(posistion__icontains=search_input)
             )
-
+        context["search_input"] = search_input
         return context
 
 
@@ -39,6 +39,9 @@ class HomeView(JobOfferList):
 class JobOfferDetail(LoginRequiredMixin, DetailView):
     model = JobOffer
     context_object_name = "job_offer"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
 
 
 class JobOfferCreate(LoginRequiredMixin, CreateView):
@@ -56,8 +59,14 @@ class JobOfferUpdate(LoginRequiredMixin, UpdateView):
     fields = ["link", "posistion", "company", "description", "status", "salary"]
     success_url = reverse_lazy("home")
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
 
 class JobOfferDelete(LoginRequiredMixin, DeleteView):
     model = JobOffer
     context_object_name = "job_offer"
     success_url = reverse_lazy("home")
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
