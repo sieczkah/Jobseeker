@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -20,6 +21,13 @@ class JobOfferList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["job_offers"] = context["job_offers"].filter(user=self.request.user)
+
+        search_input = self.request.GET.get("search") or ""
+        if search_input:
+            context["job_offers"] = context["job_offers"].filter(
+                Q(company__icontains=search_input)
+                | Q(posistion__icontains=search_input)
+            )
 
         return context
 
