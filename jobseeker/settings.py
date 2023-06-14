@@ -76,7 +76,7 @@ WSGI_APPLICATION = "jobseeker.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if DJANGO_DEV == "main":
+if DJANGO_ENV == "main":
     DATABASES = {"default": env.dict("DB_INFO")}
 else:
     DATABASES = {"default": env.dict("DB_INFO_DEV")}
