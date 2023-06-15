@@ -8,7 +8,9 @@ env = environ.Env(DEBUG=(bool, False))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DJANGO_ENV = "dev"
+
+DJANGO_ENV = "main"
+
 # Read environment variables from .env file
 env.read_env(Path.joinpath(BASE_DIR, ".env"))
 
