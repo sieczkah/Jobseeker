@@ -40,6 +40,7 @@ class JobOffer(models.Model):
     salary = models.CharField(
         max_length=100, null=True, blank=True, default="Not specified"
     )
+    ai_generated_data = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
         return f"{self.posistion} - {self.company} - {self.status} updated: {self.update_date}"
