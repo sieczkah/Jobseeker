@@ -2,7 +2,7 @@ from pathlib import Path
 
 import environ
 
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +24,8 @@ SECRET_KEY = env("SECRET_KEY")
 OPENAI_API_KEY = env("OPENAI_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env("DEBUG") == "on"
+
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
@@ -81,10 +82,12 @@ WSGI_APPLICATION = "jobseeker.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if DJANGO_ENV == "main":
+if DEBUG is False:
+    print("Running with prod database")
     DATABASES = {"default": env.dict("DB_INFO")}
 else:
-    DATABASES = {"default": env.dict("DB_INFO_DEV")}
+    print("Running with test database")
+    DATABASES = {"default": env.dict("DB_INFO_TEST")}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
