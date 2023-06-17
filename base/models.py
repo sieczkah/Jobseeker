@@ -44,10 +44,3 @@ class JobOffer(models.Model):
 
     def __str__(self):
         return f"{self.posistion} - {self.company} - {self.status} updated: {self.update_date}"
-
-
-# class AiJobData(models.Model):
-#     id = models.UUIDField(default=uuid4, unique=True, primary_key=True, editable=False)
-#     key_skills = models.TextField()
-#     questions = models.TextField()
-#     study_resources = models.TextField()
