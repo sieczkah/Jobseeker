@@ -28,7 +28,9 @@ class JobOffer(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     posistion = models.CharField(max_length=250, null=True, blank=True)
-    company = models.CharField(max_length=250, blank=False, null=False)
+    company = models.ForeignKey(
+        "Company", blank=False, null=False, on_delete=models.CASCADE
+    )
     description = models.TextField(null=True, blank=True)
     status = models.CharField(
         choices=APPLICATION_STATUS_CHOICES, default=APPLIED, max_length=2
@@ -46,8 +48,12 @@ class JobOffer(models.Model):
         return f"{self.posistion} - {self.company} - {self.status} updated: {self.update_date}"
 
 
-# class AiJobData(models.Model):
-#     id = models.UUIDField(default=uuid4, unique=True, primary_key=True, editable=False)
-#     key_skills = models.TextField()
-#     questions = models.TextField()
-#     study_resources = models.TextField()
+class Company(models.Model):
+    name = models.CharField(max_length=250, unique=True, blank=False, null=False)
+    about = models.TextField(null=True)
+
+    def __str__(self) -> str:
+        return str(self.name)
+
+    class Meta:
+        verbose_name_plural = "Companies"
