@@ -16,7 +16,7 @@
       {% for job in job_offers %}
       <tr>
 
-        <td>{{ job.apply_date }}</td>
+        <td>{{ job.apply_date|date:"D d.m" }}</td>
         <td>{{ job.posistion }}</td>
         <td>{{ job.company }}</td>
         <td>{{ job.get_status_display }}</td>
@@ -25,12 +25,9 @@
           <a href="{{ job.link }}" target="_blank">{{ job.link|truncatechars:25 }}</a>
         </td>
         <td>
-          <a href="{% url 'joboffer-detail' job.id %}">See detail</a>
-          <a href="{% url 'joboffer-update' job.id %}">Edit</a>
-          <a href="{% url 'joboffer-delete' job.id %}">Delete</a>
-          <!-- <button data-hx-get="" hx-trigger="click" hx-target="#htmx-wrapper" hx-swap="innerHTML"
-          class="btn btn-primary btn-sm"> See
-          details...</button> -->
+          <button data-hx-get="{% url 'joboffer-detail' job.id %}" hx-trigger="click" hx-target="#htmx-wrapper"
+            hx-swap="innerHTML" class="btn btn-primary btn-sm"> See
+            details...</button>
         </td>
       </tr>
       {% endfor %}

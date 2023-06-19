@@ -13,7 +13,8 @@ from django.views.generic.list import ListView
 
 from utils import openai_jobassistant
 
-from .models import JobOffer
+from .forms import JobOfferForm
+from .models import Company, JobOffer
 
 
 @login_required
@@ -49,7 +50,7 @@ class JobOfferList(LoginRequiredMixin, ListView):
         search_input = self.request.GET.get("search") or ""
         if search_input:
             context["job_offers"] = context["job_offers"].filter(
-                Q(company__icontains=search_input)
+                Q(company__name__icontains=search_input)
                 | Q(posistion__icontains=search_input)
             )
         context["search_input"] = search_input
@@ -60,6 +61,10 @@ class HomeView(JobOfferList):
     template_name = "base/index.html"
 
 
+class CompanyDetail(LoginRequiredMixin, DeleteView):
+    model = Company
+
+
 class JobOfferDetail(LoginRequiredMixin, DetailView):
     model = JobOffer
     context_object_name = "job_offer"
@@ -68,23 +73,54 @@ class JobOfferDetail(LoginRequiredMixin, DetailView):
         return super().get_queryset().filter(user=self.request.user)
 
 
-class JobOfferCreate(LoginRequiredMixin, CreateView):
-    model = JobOffer
-    fields = ["link", "posistion", "company", "description", "status", "salary"]
-    success_url = reverse_lazy("home")
+@login_required
+def create_JobOffer(request):
+    companies = Company.objects.all()
+    form = JobOfferForm()
 
-    def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        form.instance.user = self.request.user
-        return super(JobOfferCreate, self).form_valid(form)
+    if request.method == "POST":
+        form = JobOfferForm(request.POST)
+
+        if form.is_valid():
+            joboffer = form.save(commit=False)
+
+            company_name = form.cleaned_data["company_name"]
+            company, created = Company.objects.get_or_create(name=company_name)
+
+            joboffer.company = company
+            joboffer.user = request.user
+            joboffer.save()
+            return redirect("home")
+
+    context = {"form": form, "companies": companies}
+    return render(request, "base/joboffer_form.html", context=context)
 
 
-class JobOfferUpdate(LoginRequiredMixin, UpdateView):
-    model = JobOffer
-    fields = ["link", "posistion", "company", "description", "status", "salary"]
-    success_url = reverse_lazy("home")
+@login_required
+def update_JobOffer(request, pk):
+    companies = Company.objects.all()
+    joboffer = JobOffer.objects.get(id=pk)
 
-    def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user)
+    if request.user != joboffer.user:
+        return Http404
+
+    form = JobOfferForm(instance=joboffer)
+
+    if request.method == "POST":
+        form = JobOfferForm(request.POST, instance=joboffer)
+
+        if form.is_valid():
+            joboffer = form.save(commit=False)
+
+            company_name = form.cleaned_data["company_name"]
+            company, created = Company.objects.get_or_create(name=company_name)
+
+            joboffer.company = company
+            joboffer.save()
+            return redirect("home")
+
+    context = {"form": form, "companies": companies, "joboffer": joboffer}
+    return render(request, "base/joboffer_form.html", context=context)
 
 
 class JobOfferDelete(LoginRequiredMixin, DeleteView):

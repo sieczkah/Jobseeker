@@ -6,6 +6,16 @@
 <form action="" method="POST">
   {% csrf_token %}
   {{ form|crispy }}
+  <!-- DATA LIST FOR COMPANIES -->
+  <datalist id="companies-list">
+    <select name="" id="company">
+      {% for company in companies %}
+      <option value="{{ company.name }}">{{ company.name }}</option>
+      {% endfor %}
+    </select>
+  </datalist>
+
+
   <input type="submit" value="submit" class="btn btn-success">
 </form>
 <a href="{% url 'home' %}" class="btn btn-danger">Return</a>
