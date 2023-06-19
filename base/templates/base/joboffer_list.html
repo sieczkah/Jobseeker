@@ -16,7 +16,7 @@
       {% for job in job_offers %}
       <tr>
 
-        <td>{{ job.apply_date }}</td>
+        <td>{{ job.apply_date|date:"D d.m" }}</td>
         <td>{{ job.posistion }}</td>
         <td>{{ job.company }}</td>
         <td>{{ job.get_status_display }}</td>
