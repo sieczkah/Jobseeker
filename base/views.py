@@ -50,7 +50,7 @@ class JobOfferList(LoginRequiredMixin, ListView):
         search_input = self.request.GET.get("search") or ""
         if search_input:
             context["job_offers"] = context["job_offers"].filter(
-                Q(company__icontains=search_input)
+                Q(company__name__icontains=search_input)
                 | Q(posistion__icontains=search_input)
             )
         context["search_input"] = search_input
@@ -59,6 +59,10 @@ class JobOfferList(LoginRequiredMixin, ListView):
 
 class HomeView(JobOfferList):
     template_name = "base/index.html"
+
+
+class CompanyDetail(LoginRequiredMixin, DeleteView):
+    model = Company
 
 
 class JobOfferDetail(LoginRequiredMixin, DetailView):
