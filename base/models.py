@@ -31,6 +31,7 @@ class JobOffer(models.Model):
     company = models.ForeignKey(
         "Company", blank=False, null=False, on_delete=models.CASCADE
     )
+    company_personalized_info = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     status = models.CharField(
         choices=APPLICATION_STATUS_CHOICES, default=APPLIED, max_length=2
@@ -50,7 +51,7 @@ class JobOffer(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=250, unique=True, blank=False, null=False)
-    about = models.TextField(null=True)
+    general_info = models.TextField(null=True)
 
     def __str__(self) -> str:
         return str(self.name)

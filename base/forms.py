@@ -15,6 +15,7 @@ class JobOfferForm(forms.ModelForm):
             "link",
             "posistion",
             "company_name",
+            "company_personalized_info",
             "description",
             "status",
             "salary",
