@@ -28,6 +28,8 @@
           <button data-hx-get="{% url 'joboffer-detail' job.id %}" hx-trigger="click" hx-target="#htmx-wrapper"
             hx-swap="innerHTML" class="btn btn-primary btn-sm"> See
             details...</button>
+          <a href="{% url 'joboffer-delete' job.id %}" class="link-danger ms-1"><i
+              class="fa-solid fa-trash-can fa-lg"></i></a>
         </td>
       </tr>
       {% endfor %}
