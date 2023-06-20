@@ -1,3 +1,6 @@
+{% extends 'main.html' %}
+{% block content %}
+
 <div id="htmx-job-detail" class="d-block">
   <div class="d-flex flex-column">
     <div class="d-flex flex-row justify-content-between">
@@ -65,5 +68,13 @@
   </div>
 
   <a href="{% url 'joboffer-update' job_offer.id %}" class="btn btn-primary">Edit offer</a>
-  <a href="{% url 'get-ai-offer' job_offer.id %}" class="btn btn-warning">Create AI data</a>
+  {% if user_is_pro %}
+  <a href="{% url 'get-ai-offer' job_offer.id %}" class="btn btn-warning">Create AI data
+  </a>
+  {% else %}
+
+  <a href="" class="btn btn-secondary disabled" disabled>Create AI data - Pro functionality
+  </a>
+  {% endif %}
 </div>
+{% endblock content %}

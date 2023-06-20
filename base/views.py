@@ -13,11 +13,13 @@ from django.views.generic.list import ListView
 
 from utils import openai_jobassistant
 
+from .decorators import allowed_users
 from .forms import JobOfferForm
 from .models import Company, JobOffer
 
 
 @login_required
+@allowed_users(allowed_groups=["pro_user"])
 def ai_jobassistant_view(request, pk):
     offer = JobOffer.objects.get(id=pk)
 
@@ -45,7 +47,9 @@ class JobOfferList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["job_offers"] = context["job_offers"].filter(user=self.request.user)
+        context["job_offers"] = (
+            context["job_offers"].filter(user=self.request.user).order_by("apply_date")
+        )
 
         search_input = self.request.GET.get("search") or ""
         if search_input:
@@ -68,6 +72,15 @@ class CompanyDetail(LoginRequiredMixin, DeleteView):
 class JobOfferDetail(LoginRequiredMixin, DetailView):
     model = JobOffer
     context_object_name = "job_offer"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        user_groups = [group.name for group in self.request.user.groups.all()]
+        user_is_pro = "pro_user" in user_groups
+        context["user_is_pro"] = user_is_pro
+
+        return context
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
