@@ -14,8 +14,8 @@ COPY . /app
 WORKDIR /app
 
 RUN adduser --disabled-password --no-create-home django && \
-    chmod -R +x /scripts
+    chmod -R +x ./scripts
 
 USER django
-CMD ["run.sh"]
+CMD ["./scripts/run.sh"]
 
