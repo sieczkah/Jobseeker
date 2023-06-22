@@ -3,6 +3,9 @@
 
 <div id="htmx-job-detail" class="d-block">
   <div class="d-flex flex-column">
+    <a href="{% url 'home' %}" class="mb-3 link-underline link-underline-opacity-0"><i
+        class="fa-solid fa-chevron-left fa-sm"></i>
+      Back</a>
     <div class="d-flex flex-row justify-content-between">
       <h4>{{ job_offer.posistion }} - {{ job_offer.company }}</h4>
     </div>

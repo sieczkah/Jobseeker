@@ -2,7 +2,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h3>job form</h3>
+<a href="{% url 'home' %}" class="mb-3 link-underline link-underline-opacity-0"><i
+    class="fa-solid fa-chevron-left fa-sm"></i>
+  Back</a>
+<h3></i></a>Add job application</h3>
 <form action="" method="POST">
   {% csrf_token %}
   {{ form|crispy }}
