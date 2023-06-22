@@ -16,6 +16,8 @@ WORKDIR /app
 RUN adduser --disabled-password --no-create-home django && \
     chmod -R +x ./scripts
 
+
+ENV PATH="/scripts:$PATH"
 USER django
-CMD ["./scripts/run.sh"]
+CMD ["run.sh"]
 
