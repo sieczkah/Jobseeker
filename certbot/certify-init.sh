@@ -6,7 +6,7 @@ set -e
 
 #nc - netcat checks if port 80 is accessible 
 until nc -z proxy 80; do
-    echo "Waiting for proxy"
+    echo "Waiting for proxy $DOMAIN"
     sleep 5s & wait ${!}
 done
 
