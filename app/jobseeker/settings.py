@@ -56,6 +56,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "jobseeker.urls"
 
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{env(ALLOWED_HOSTS)}",
+    f"https://www.{env(ALLOWED_HOSTS)}",
+]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
