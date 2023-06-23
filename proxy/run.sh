@@ -24,4 +24,4 @@ else
     envsubst < /etc/nginx/default-ssl.conf.tpl > /etc/nginx/conf.d/default.conf
 fi
 
-nginx -g 'deamon off;'
+nginx -g 'daemon off;'
