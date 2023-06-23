@@ -18,5 +18,5 @@ certbot certonly \
     -d "$DOMAIN" \
     --email $EMAIL \
     --rsa-key-size 4096 \
-    --agre-tos \
+    --agree-tos \
     --noninteractive
