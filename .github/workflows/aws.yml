@@ -1,0 +1,38 @@
+# When there is a push to "main" branch this workflow will,
+# pull the code into ec2 instance and rebuild new app container with updated django code.
+
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Connect with instance
+      id: build-image
+      env:
+        AWS_KEY: ${{ secrets.AWS_PRIV_KEY  }}           # access key to the instance
+        HOST: ${{ secrets.HOST  }}                      # instance host
+        USER_NAME: ${{ secrets.USER_NAME  }}            # isntance username
+        APP_PATH: ${{ secrets.APP_PATH  }}            # isntance username
+      run: |
+        # Create a key
+        echo "$AWS_KEY" > aws_key && chmod 600 aws_key
+        # Connect to the instance
+        ssh -o StrictHostKeyChecking=no -i aws_key ${USER_NAME}@${HOST} '
+          # Now we will start deployment on instance
+          cd ${APP_PATH} &&
+          git pull &&
+          docker-compose -f docker-compose-prod.yml build app &&
+          docker-compose -f docker-compose-prod.yml up -d --no-deps app
+        '
+
