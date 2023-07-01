@@ -22,13 +22,13 @@ jobs:
           PRIVATE_KEY: ${{ secrets.KEY  }}
           HOST: ${{ secrets.HOST  }}
           USER: ${{ secrets.USER  }}
-          PATH: ${{ secrets.PATH }}
+          DEPLOY_PATH: ${{ secrets.PATH }}
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} '
 
-            cd ${PATH} &&
+            cd ${DEPLOY_PATH} &&
             git pull &&
             docker-compose -f docker-compose-prod.yml build app &&
             docker-compose -f docker-compose-prod.yml up -d --no-deps app
