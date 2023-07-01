@@ -19,13 +19,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Deploy in EC2
         env:
-          KEY: ${{ secrets.KEY  }}
+          PRIVATE_KEY: ${{ secrets.KEY  }}
           HOST: ${{ secrets.HOST  }}
           USER: ${{ secrets.USER  }}
           PATH: ${{ secrets.PATH }}
 
         run: |
-          echo "$KEY" > private_key && chmod 400 private_key
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOST} '
 
             cd ${PATH} &&
