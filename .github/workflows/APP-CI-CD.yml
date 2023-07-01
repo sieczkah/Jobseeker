@@ -2,31 +2,29 @@ name: APP EC2 Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
-      - 'app/**'
+      - "app/**"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
-      - 'app/**'
+      - "app/**"
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - name: Deploy in EC2
         env:
-            KEY: ${{ secrets.KEY  }}
-            HOST : ${{ secrets.HOST  }}
-            USER : ${{ secrets.USER  }}
-            PATH : ${{ secrets.PATH }}
-            
+          KEY: ${{ secrets.KEY  }}
+          HOST: ${{ secrets.HOST  }}
+          USER: ${{ secrets.USER  }}
+          PATH: ${{ secrets.PATH }}
+
         run: |
-          echo "$KEY" > key && chmod 600 key
+          echo "$KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i key ${USER}@${HOST} '
 
             cd ${PATH} &&
