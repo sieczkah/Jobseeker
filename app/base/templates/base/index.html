@@ -61,14 +61,30 @@
       <!-- DETAIL END -->
 
       <!-- LIST OF APPLICATIONS -->
-      <h2>Section title</h2>
-      <div class="row col-8">
-        <div class="col-2">
-          <a class=" btn btn-success" aria-current="page" href="{% url 'joboffer-create' %}">
+      <div class="row col-9">
+        <!-- ADD BUTTON -->
+        <div class="col-3 d-flex flex-row gap-2">
+          <a class="btn btn-success" aria-current="page" href="{% url 'joboffer-create' %}">
             Add Job
           </a>
+          <div class="dropdown">
+            <a class="btn btn-outline-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Filter <i class="fa-solid fa-calendar-days"></i>
+            </a>
+
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">Last week</a></li>
+              <li><a class="dropdown-item" href="#">Last month</a></li>
+              <li><a class="dropdown-item" href="#">All</a></li>
+            </ul>
+          </div>
         </div>
+
+        <!-- ADD BUTTON ENDS-->
+
         <div class="col">
+          <!-- SEARCH FORM -->
           <form action="" method="GET">
             <div class="input-group rounded">
               <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search"
@@ -78,9 +94,10 @@
               </span>
             </div>
           </form>
+          <!-- SEARCH FORM ENDS-->
         </div>
       </div>
-      <div class="table-responsive small overflow-y-auto" style="max-height: 70vh;">
+      <div class="table-responsive small overflow-y-auto overflow-x-hidden" style="max-height: 70vh;">
         {% include 'base/joboffer_list.html' %}
       </div>
       <!-- LIST OF APPLICATIONS ENDS -->
