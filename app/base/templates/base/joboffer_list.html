@@ -1,38 +1,33 @@
-<table class="table table-striped table-sm">
+<div class="d-flex flex-column mt-2 pb-2 rounded-3" style="background: var(--bs-gray-200);">
+  <div class="row d-flex pt-3 px-3">
+    <div class="col-1 d-flex flex-row me-1 align-items-center"><strong>Date</strong>
+    </div>
+    <div class="col-3"><strong>Posistion</strong></div>
+    <div class="col-3"><strong>Company</strong></div>
+    <div class="col-3"><strong>Status</strong></div>
 
-  <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Posistion</th>
-      <th scope="col">Company</th>
-      <th scope="col">Status</th>
-      <th scope="col">Salary</th>
-      <th scope="col">Link</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <div>
-    <tbody>
-      {% for job in job_offers %}
-      <tr>
-
-        <td>{{ job.apply_date|date:"D d.m" }}</td>
-        <td>{{ job.posistion }}</td>
-        <td>{{ job.company }}</td>
-        <td>{{ job.get_status_display }}</td>
-        <td>{{ job.salary }}</td>
-        <td>
-          <a href="{{ job.link }}" target="_blank">{{ job.link|truncatechars:25 }}</a>
-        </td>
-        <td>
-          <button data-hx-get="{% url 'joboffer-detail' job.id %}" hx-trigger="click" hx-target="#htmx-wrapper"
-            hx-swap="innerHTML" class="btn btn-primary btn-sm"> See
-            details...</button>
-          <a href="{% url 'joboffer-delete' job.id %}" class="link-danger ms-1"><i
-              class="fa-solid fa-trash-can fa-lg"></i></a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
+    <div class="col-1"></div>
   </div>
-</table>
+  {% for job in job_offers %}
+  <div class="row d-flex py-3 m-2 bg-white rounded-3 align-items-center">
+    <div class="col-1">{{ job.apply_date|date:"D d.m" }}</div>
+    <div class="col-3">
+      <a class="link-offset-2 link-underline link-underline-opacity-0" href="{{ job.link }}"
+        target="_blank">{{ job.posistion }} <i class="fa-solid fa-up-right-from-square fa-xs"></i></a>
+    </div>
+    <div class="col-3">{{ job.company }}</div>
+    <div class="col-3">{{ job.get_status_display }}</div>
+    <div class="col-2 text-end">
+      <div>
+        <button data-hx-get="{% url 'joboffer-detail' job.id %}" hx-trigger="click" hx-target="#htmx-wrapper"
+          hx-swap="innerHTML" class="btn btn-primary btn-sm"> See
+          details...</button>
+        <a href="{% url 'joboffer-update' job.id %}" class="link-success ms-1"><i
+            class="fa-solid fa-pen-to-square fa-lg"></i></a>
+        <a href="{% url 'joboffer-delete' job.id %}" class="link-danger ms-1"><i
+            class="fa-solid fa-trash-can fa-lg"></i></a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
