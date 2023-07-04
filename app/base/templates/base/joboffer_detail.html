@@ -48,7 +48,7 @@
       </h2>
       <div id="collapseDescription" class="accordion-collapse collapse" data-bs-parent="#accordionExample" style="">
         <div class="accordion-body">
-          {{ job_offer.description|linebreaksbr }}
+          {{ job_offer.description|safe|linebreaksbr }}
         </div>
       </div>
     </div>
